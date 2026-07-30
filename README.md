@@ -1,6 +1,6 @@
 # Crypto Price Notifier
 
-A simple Telegram bot that monitors cryptocurrency prices and sends alerts when prices cross defined thresholds.
+A simple Telegram bot that monitors cryptocurrency prices and sends alerts when thresholds are crossed.
 
 ## Features
 - Monitor multiple cryptocurrencies

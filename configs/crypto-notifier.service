@@ -1,0 +1,12 @@
+[Unit]
+Description=Telegram Crypto Price Notifier
+
+[Service]
+User=emilioranucoli
+WorkingDirectory=/Users/emilioranucoli/Desktop/Oficina_Ranuk/crypto-price-notifier
+ExecStart=/Users/emilioranucoli/Desktop/Oficina_Ranuk/crypto-price-notifier/venv/bin/python /Users/emilioranucoli/Desktop/Oficina_Ranuk/crypto-price-notifier/main.py
+Restart=always
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target

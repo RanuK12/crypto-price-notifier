@@ -14,6 +14,7 @@ import requests
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram.error import InvalidToken
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -188,12 +189,19 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def main():
     """Main entry point."""
-    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
-        logger.error("TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID must be set in .env")
+    if not TELEGRAM_BOT_TOKEN:
+        logger.error("TELEGRAM_BOT_TOKEN is not set. Get a token from @BotFather and set it in .env as TELEGRAM_BOT_TOKEN=<token>")
+        return
+    if not TELEGRAM_CHAT_ID:
+        logger.error("TELEGRAM_CHAT_ID is not set. Get your chat ID from @userinfobot and set it in .env as TELEGRAM_CHAT_ID=<chat_id>")
         return
     
     # Create application
-    application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
+    try:
+        application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
+    except InvalidToken:
+        logger.error("Invalid TELEGRAM_BOT_TOKEN. Please check your token from @BotFather and update .env")
+        return
     
     # Add handlers
     application.add_handler(CommandHandler("start", start))
@@ -212,7 +220,10 @@ def main():
     logger.info("Bot started. Press Ctrl+C to stop.")
     
     # Run the bot
-    application.run_polling()
+    try:
+        application.run_polling()
+    except Exception as e:
+        logger.error(f"Error running the bot: {e}. Please check your TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID.")
 
 
 if __name__ == '__main__':

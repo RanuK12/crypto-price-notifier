@@ -203,7 +203,8 @@ def main():
     application.job_queue.run_repeating(
         check_prices_job,
         interval=CHECK_INTERVAL,
-        first=10
+        first=10,
+        id='price_check'
     )
     logger.info("Bot started. Press Ctrl+C to stop.")
     

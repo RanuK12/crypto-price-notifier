@@ -199,8 +199,8 @@ def main():
     # Create application
     try:
         application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
-    except InvalidToken:
-        logger.error("Invalid TELEGRAM_BOT_TOKEN. Please check your token from @BotFather and update .env")
+    except Exception as e:
+        logger.error(f"Error al crear la aplicación de Telegram: {e}. Verifique su TELEGRAM_BOT_TOKEN.")
         return
     
     # Add handlers

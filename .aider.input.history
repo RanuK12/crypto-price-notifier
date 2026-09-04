@@ -1,6 +1,0 @@
-
-# 2026-08-23 08:17:50.588790
-+Add clear error handling for missing TELEGRAM_BOT_TOKEN: when the token is not set, exit with a user-friendly message explaining how to create a bot via @BotFather and set the token in .env. Wrap the existing os.getenv call in a check and provide step-by-step instructions on exit.
-
-# 2026-08-23 08:17:50.589031
-+Add clear error handling for missing TELEGRAM_BOT_TOKEN: when the token is not set, exit with a user-friendly message explaining how to create a bot via @BotFather and set the token in .env. Wrap the existing os.getenv call in a check and provide step-by-step instructions on exit.

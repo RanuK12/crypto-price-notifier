@@ -11,7 +11,6 @@ from datetime import datetime
 from typing import Dict, List, Tuple
 
 import requests
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 from dotenv import load_dotenv
@@ -200,14 +199,11 @@ def main():
     application.add_handler(CommandHandler("status", status))
     application.add_handler(CommandHandler("help", help_command))
     
-    # Setup scheduler
-    scheduler = AsyncIOScheduler()
-    scheduler.add_job(
+    # Setup job queue
+    application.job_queue.run_repeating(
         check_prices_job,
-        'interval',
-        seconds=CHECK_INTERVAL,
-        args=[application],
-        id='price_check'
+        interval=CHECK_INTERVAL,
+        first=10
     )
     logger.info("Bot started. Press Ctrl+C to stop.")
     

@@ -14,7 +14,6 @@ import requests
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 from dotenv import load_dotenv
-import sys
 
 # Load environment variables
 load_dotenv()
@@ -188,12 +187,9 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def main():
     """Main entry point."""
-    if not TELEGRAM_BOT_TOKEN:
-        print("Falta TELEGRAM_BOT_TOKEN. Sacá uno: abrí Telegram, escribí a @BotFather, /newbot, copiá el token y exportá TELEGRAM_BOT_TOKEN=... (o ponelo en .env).")
-        sys.exit(1)
-    if not TELEGRAM_CHAT_ID:
-        print("Falta TELEGRAM_CHAT_ID. Para obtenerlo, abre Telegram, escribí a @userinfobot y copiá tu ID. Luego exportá TELEGRAM_CHAT_ID=... (o ponelo en .env).")
-        sys.exit(1)
+    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
+        logger.error("TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID must be set in .env")
+        return
     
     # Create application
     application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()

@@ -195,6 +195,12 @@ def main():
         print("Falta TELEGRAM_CHAT_ID. Para obtenerlo, abre Telegram, escribí a @userinfobot y copiá tu ID. Luego exportá TELEGRAM_CHAT_ID=... (o ponelo en .env).")
         sys.exit(1)
     
+    # Ensure there is an event loop for asyncio
+    try:
+        asyncio.get_event_loop()
+    except RuntimeError:
+        asyncio.set_event_loop(asyncio.new_event_loop())
+    
     # Create application
     application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
     

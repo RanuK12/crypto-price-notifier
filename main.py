@@ -189,10 +189,22 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def main():
     """Main entry point."""
     if not TELEGRAM_BOT_TOKEN:
-        print("Falta TELEGRAM_BOT_TOKEN. Sacá uno: abrí Telegram, escribí a @BotFather, /newbot, copiá el token y exportá TELEGRAM_BOT_TOKEN=... (o ponelo en .env).")
+        print("Error: TELEGRAM_BOT_TOKEN is missing.")
+        print("To get a token:")
+        print("  1. Open Telegram and talk to @BotFather")
+        print("  2. Send the command /newbot and follow the steps to create a new bot")
+        print("  3. Copy the token provided by BotFather")
+        print("  4. Set it as an environment variable: export TELEGRAM_BOT_TOKEN=<your_token>")
+        print("     or create a .env file (see .env.example) and add: TELEGRAM_BOT_TOKEN=<your_token>")
         sys.exit(1)
     if not TELEGRAM_CHAT_ID:
-        print("Falta TELEGRAM_CHAT_ID. Para obtenerlo, abre Telegram, escribí a @userinfobot y copiá tu ID. Luego exportá TELEGRAM_CHAT_ID=... (o ponelo en .env).")
+        print("Error: TELEGRAM_CHAT_ID is missing.")
+        print("To get your chat ID:")
+        print("  1. Open Telegram and talk to @userinfobot")
+        print("  2. Send any message to the bot")
+        print("  3. Copy the numeric ID from the response")
+        print("  4. Set it as an environment variable: export TELEGRAM_CHAT_ID=<your_chat_id>")
+        print("     or create a .env file (see .env.example) and add: TELEGRAM_CHAT_ID=<your_chat_id>")
         sys.exit(1)
     
     # Create application

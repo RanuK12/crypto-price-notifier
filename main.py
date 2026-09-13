@@ -207,6 +207,12 @@ def main():
         print("     or create a .env file (see .env.example) and add: TELEGRAM_CHAT_ID=<your_chat_id>")
         sys.exit(1)
     
+    # Ensure there is an event loop for asyncio
+    try:
+        asyncio.get_event_loop()
+    except RuntimeError:
+        asyncio.set_event_loop(asyncio.new_event_loop())
+    
     # Create application
     application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
     

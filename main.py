@@ -189,22 +189,10 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def main():
     """Main entry point."""
     if not TELEGRAM_BOT_TOKEN:
-        print("Error: TELEGRAM_BOT_TOKEN is missing.")
-        print("To get a token:")
-        print("  1. Open Telegram and talk to @BotFather")
-        print("  2. Send the command /newbot and follow the steps to create a new bot")
-        print("  3. Copy the token provided by BotFather")
-        print("  4. Set it as an environment variable: export TELEGRAM_BOT_TOKEN=<your_token>")
-        print("     or create a .env file (see .env.example) and add: TELEGRAM_BOT_TOKEN=<your_token>")
+        print("Error: El token de Telegram no está configurado. Por favor, obtén uno de @BotFather en Telegram y configúralo en la variable de entorno TELEGRAM_BOT_TOKEN o en el archivo de configuración.")
         sys.exit(1)
     if not TELEGRAM_CHAT_ID:
-        print("Error: TELEGRAM_CHAT_ID is missing.")
-        print("To get your chat ID:")
-        print("  1. Open Telegram and talk to @userinfobot")
-        print("  2. Send any message to the bot")
-        print("  3. Copy the numeric ID from the response")
-        print("  4. Set it as an environment variable: export TELEGRAM_CHAT_ID=<your_chat_id>")
-        print("     or create a .env file (see .env.example) and add: TELEGRAM_CHAT_ID=<your_chat_id>")
+        print("Error: El chat ID de Telegram no está configurado. Por favor, obtén tu ID de @userinfobot en Telegram y configúralo en la variable de entorno TELEGRAM_CHAT_ID o en el archivo de configuración.")
         sys.exit(1)
     
     # Ensure there is an event loop for asyncio

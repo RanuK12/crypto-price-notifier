@@ -1,0 +1,12 @@
+# config.example.yaml
+
+telegram:
+  token: "TU_TOKEN_DE_TELEGRAM"
+  chat_id: "TU_CHAT_ID"
+price:
+  coins: "bitcoin,ethereum,solana"
+  check_interval: 300  # segundos
+  thresholds:
+    bitcoin: ["above:100000"]
+    ethereum: ["below:3000"]
+    solana: ["above:200"]

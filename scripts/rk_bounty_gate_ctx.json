@@ -1,0 +1,20 @@
+{
+  "repo": "RanuK12/crypto-price-notifier",
+  "branch": "ranukita/4a5a0a",
+  "commit": "16ac57a",
+  "description": "feat: add config example, improve README with quick start guide and error docs",
+  "changes": [
+    {
+      "file": "config.example.yaml",
+      "type": "add",
+      "description": "Configuración de ejemplo para facilitar la configuración del bot"
+    },
+    {
+      "file": "README.md",
+      "type": "modify",
+      "description": "Actualización de la guía de ejecución rápida y documentación de errores comunes"
+    }
+  ],
+  "justification": "Mejorar la usabilidad del proyecto para que alguien pueda ejecutarlo en 5 minutos, siguiendo el plan aprobado por el Tech Lead. Se agregó una configuración de ejemplo y se actualizó el README con guías claras y manejo de errores.",
+  "maintainer": "RanuK12"
+}

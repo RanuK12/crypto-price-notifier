@@ -189,10 +189,11 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def main():
     """Main entry point."""
     if not TELEGRAM_BOT_TOKEN:
-        print("Falta TELEGRAM_BOT_TOKEN. Sacá uno: abrí Telegram, escribí a @BotFather, /newbot, copiá el token y exportá TELEGRAM_BOT_TOKEN=... (o ponelo en .env).")
+        print("ERROR: Falta TELEGRAM_BOT_TOKEN. Obtenelo en @BotFather y setealo con:")
+        print("  export TELEGRAM_BOT_TOKEN='TU_TOKEN'; docker run ...", file=sys.stderr)
         sys.exit(1)
     if not TELEGRAM_CHAT_ID:
-        print("Falta TELEGRAM_CHAT_ID. Para obtenerlo, abre Telegram, escribí a @userinfobot y copiá tu ID. Luego exportá TELEGRAM_CHAT_ID=... (o ponelo en .env).")
+        print("ERROR: Falta TELEGRAM_CHAT_ID. Para obtenerlo, abre Telegram, escribi a @userinfobot y copiá tu ID. Luego exporta TELEGRAM_CHAT_ID=...", file=sys.stderr)
         sys.exit(1)
     
     # Create application

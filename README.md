@@ -43,3 +43,34 @@ export TELEGRAM_TOKEN=tu_token_here
 - **Problemas con GitHub:**
   - `git fetch` falló: Revisá tu conexión o autenticación de GitHub.
   - Dependencias no instaladas: Asegurate de activar el entorno virtual y ejecutar `pip install -r requirements.txt`.
+## Ejecutar en 5 minutos
+
+1. Copiar `config.example.yaml` a `config.yaml` y rellenar los valores:
+   - `telegram_token`: obtener un token creando un bot en @BotFather → `/newbot`
+   - `chat_id`: obtener el ID del chat usando un bot como @userinfobot o @getmyid_bot
+   - `coin_id`: CoinGecko ID de la moneda (ej: "bitcoin", "ethereum")
+   - `threshold`: precio en USD que dispara la alerta
+   - `poll_interval`: segundos entre cada consulta (default: 60)
+
+2. Construir la imagen Docker:
+   ```bash
+   docker build -t crypto-price-notifier:latest .
+   ```
+
+3. Ejecutar el contenedor (una línea):
+   ```bash
+   docker run --rm -v "$(pwd)/config.yaml:/app/config.yaml" \
+     -e TELEGRAM_TOKEN="${TELEGRAM_TOKEN:-YOUR_TELEGRAM_BOT_TOKEN}" \
+     crypto-price-notifier:latest
+   ```
+
+### ¿Qué ocurre si falta el token?
+Si no se proporciona `TELEGRAM_TOKEN`, el bot mostrará un mensaje claro y saldrá:
+```
+ERROR: Falta variable de entorno TELEGRAM_TOKEN.
+Obtén un token creando un bot en @BotFather → /newbot → copia el token.
+```
+
+### Variables de entorno soportadas
+- `TELEGRAM_TOKEN`: token del bot de Telegram (obligatorio)
+- `CHAT_ID`: ID del chat donde enviar notificaciones (sobrescribe config.yaml)

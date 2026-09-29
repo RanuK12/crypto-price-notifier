@@ -1,0 +1,12 @@
+/opt/homebrew/lib/python3.14/site-packages/requests/__init__.py:113: RequestsDependencyWarning: urllib3 (2.6.3) or chardet (7.4.3)/charset_normalizer (3.4.7) doesn't match a supported version!
+  warnings.warn(
+CoinGecko API: OK
+Response: {'bitcoin': {'usd': 83935}}
+fetch_prices ERROR: fetch_prices() missing 1 required positional argument: 'coins'
+  File "<string>", line 7
+    from main.py
+                ^
+SyntaxError: invalid syntax
+/opt/homebrew/lib/python3.14/site-packages/requests/__init__.py:113: RequestsDependencyWarning: urllib3 (2.6.3) or chardet (7.4.3)/charset_normalizer (3.4.7) doesn't match a supported version!
+  warnings.warn(
+fetch_prices: {'bitcoin': 83935}

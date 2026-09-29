@@ -9,6 +9,7 @@ import asyncio
 import logging
 from datetime import datetime
 from typing import Dict, List, Tuple
+import yaml
 
 import requests
 from telegram import Update

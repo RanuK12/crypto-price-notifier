@@ -27,7 +27,7 @@
 ```bash
 # Primero, creá y editá tu .env (ver arriba)
 # Luego ejecutá:
-docker run --rm -v $(pwd):/app -e TELEGRAM_BOT_TOKEN=$(grep TELEGRAM_BOT_TOKEN .env | cut -d '=' -f2) -e TELEGRAM_CHAT_ID=$(grep TELEGRAM_CHAT_ID .env | cut -d '=' -f2) -e COINGECKO_API_KEY=$(grep COINGECKO_API_KEY .env | cut -d '=' -f2) -e CHECK_INTERVAL=$(grep CHECK_INTERVAL .env | cut -d '=' -f2) -e COINS=$(grep COINS .env | cut -d '=' -f2) -e THRESHOLDS=$(grep THRESHOLDS .env | cut -d '=' -f2) python:3.11-slim bash -c "cd /app && pip install -r requirements.txt && python main.py"
+docker run --rm -v $(pwd):/app --env-file .env python:3.11-slim bash -c "cd /app && pip install -r requirements.txt && python main.py"
 ```
 
 ### Sin Docker

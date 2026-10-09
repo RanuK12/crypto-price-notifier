@@ -1,45 +1,69 @@
-# Telegram Crypto Price Notifier Bot
+# Crypto Price Notifier
 
-## Setup
-1. Install dependencies:
+Un bot de Telegram que monitorea precios de criptomonedas y envía alertas cuando se cruzan umbrales.
+
+## 📦 Configuración
+
+1. **Clona el repositorio** y navega a la carpeta:
    ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate
+   git clone https://github.com/RanuK12/crypto-price-notifier.git
+   cd crypto-price-notifier
+   ```
+
+2. **Configura el archivo `.env`** con tus valores:
+   ```bash
+   cp .env.example .env
+   nano .env
+   ```
+   - Sigue las instrucciones en `.env.example` para obtener `TELEGRAM_BOT_TOKEN` y `TELEGRAM_CHAT_ID`.
+
+3. **Instala las dependencias**:
+   ```bash
    pip install -r requirements.txt
    ```
 
-2. Configuración de ejemplo:
-   Copiá este archivo para empezar:
-   ```bash
-   cp config.example.yaml config.yaml
-   ```
-   Edita `config.yaml` con tu token de Telegram y los parámetros de alerta.
+4. **Ejecuta el bot** (opciones):
+   - **Localmente** (para desarrollo):
+     ```bash
+     python3 main.py
+     ```
+   - **Con Docker** (recomendado para producción):
+     ```bash
+     docker build -t crypto-price-notifier .
+     docker run -d --env-file .env crypto-price-notifier
+     ```
 
-## Ejecución rápida (5 minutos)
+## 📌 Ejemplo de configuración
 
-### Usando Docker
+Asegúrate de que tu archivo `.env` tenga los valores correctos:
+
+```env
+TELEGRAM_BOT_TOKEN='123456789:ABC-DEF1234ghIkl-zyx57W2v1u123ew11'
+TELEGRAM_CHAT_ID='-1001234567890'
+CHECK_INTERVAL=300
+COINS='bitcoin,ethereum,solana'
+THRESHOLDS='bitcoin:above:100000,ethereum:below:3000,solana:above:200'
+```
+
+## 🔧 Comandos del bot
+
+- **/start**: Inicia el bot y muestra información básica.
+- **/status**: Muestra los precios actuales y el estado de las alertas.
+- **/help**: Muestra esta ayuda.
+
+## 📝 Notas
+
+- El bot usa la API de CoinGecko para obtener los precios.
+- Las alertas se envían al chat especificado en `TELEGRAM_CHAT_ID`.
+- El intervalo de verificación se configura en segundos.
+
+## 📦 Docker
+
+El proyecto incluye un archivo `Dockerfile` para facilitar la ejecución en producción.
+
 ```bash
-# Exportá el token de Telegram y ejecutá en Docker
-export TELEGRAM_TOKEN=$(grep token config.yaml | awk '{print $2}' | tr -d "'\n")
-docker run --rm -v $(pwd):/app -e TELEGRAM_TOKEN=$TELEGRAM_TOKEN python:3.11-slim bash -c "cd /app && pip install -r requirements.txt && python main.py"
+docker build -t crypto-price-notifier .
+docker run -d --env-file .env crypto-price-notifier
 ```
 
-### Sin Docker
-```bash
-# Activá el entorno virtual y ejecutá
-source .venv/bin/activate
-export TELEGRAM_TOKEN=tu_token_here
-python main.py
-```
-
-## Errores comunes
-- **Falta el token de Telegram:** Crea un bot en [@BotFather](https://t.me/BotFather) con `/newbot` y exporta el token:
-  ```bash
-export TELEGRAM_TOKEN=tu_token_here
-```
-
-- **Error de conexión a CoinGecko:** Verifica tu conexión a internet. La API de CoinGecko es pública y no requiere clave.
-
-- **Problemas con GitHub:**
-  - `git fetch` falló: Revisá tu conexión o autenticación de GitHub.
-  - Dependencias no instaladas: Asegurate de activar el entorno virtual y ejecutar `pip install -r requirements.txt`.
+¡Listo! El bot está corriendo y listo para enviar alertas.

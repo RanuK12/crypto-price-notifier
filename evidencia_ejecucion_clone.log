@@ -1,0 +1,6 @@
+Ejecución de prueba desde clon local:
+- Import exitoso de main.py: `python3 -c "import sys; sys.path.append('..'); from main import main; print('Import exitoso')"`
+- El código se importa y ejecuta sin errores de importación.
+
+Fecha: 2026-10-09
+Hora: 19:15

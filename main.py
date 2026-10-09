@@ -218,4 +218,11 @@ def main():
 
 
 if __name__ == '__main__':
+    # Asegurar que exista un loop de eventos antes de ejecutar main()
+    try:
+        asyncio.get_running_loop()
+    except RuntimeError:
+        # No hay loop en ejecución, crear uno nuevo
+        asyncio.set_event_loop(asyncio.new_event_loop())
+    
     main()

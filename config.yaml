@@ -1,0 +1,8 @@
+telegram:
+  token: "TEST_TOKEN_12345"
+  chat_id: 123456789
+
+price:
+  coin_id: "bitcoin"
+  threshold_usd: 30000
+  direction: "above"

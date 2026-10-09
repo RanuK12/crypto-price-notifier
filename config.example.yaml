@@ -1,12 +1,8 @@
-# config.example.yaml
-
 telegram:
-  token: "TU_TOKEN_DE_TELEGRAM"
-  chat_id: "TU_CHAT_ID"
+  token: "YOUR_TELEGRAM_BOT_TOKEN"   # Obténlo con @BotFather → /newbot → copia el token
+  chat_id: 123456789                # ID del chat donde recibirás avisos (usa @userinfobot)
+
 price:
-  coins: "bitcoin,ethereum,solana"
-  check_interval: 300  # segundos
-  thresholds:
-    bitcoin: ["above:100000"]
-    ethereum: ["below:3000"]
-    solana: ["above:200"]
+  coin_id: "bitcoin"                # CoinGecko ID, ej. ethereum, dogecoin
+  threshold_usd: 30000              # Notificar cuando el precio cruce este valor
+  direction: "above"                # "above" o "below"

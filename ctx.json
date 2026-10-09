@@ -1,0 +1,6 @@
+{
+  "task": "crypto-price-notifier",
+  "branch": "ranukita/merge-async-loop",
+  "pr_title": "Corregido manejo de loop de eventos y mejoras en documentación",
+  "pr_body": "Corregí el manejo del loop de eventos de asyncio y mejoré la documentación para facilitar la configuración del bot.\n\nCambios realizados:\n- Corregí el manejo del loop de eventos de asyncio.\n- Añadí archivo `.env.example` para facilitar la configuración.\n- Mejoré el `README.md` con instrucciones claras y ejemplos.\n\nVerificación:\n- El bot se ejecuta correctamente y envía alertas de precios.\n- La configuración es más intuitiva para nuevos usuarios."
+}

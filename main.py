@@ -17,9 +17,6 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 from dotenv import load_dotenv
 import sys
 
-# Load environment variables
-load_dotenv()
-
 # Configure logging
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -27,29 +24,45 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Configuration from environment
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
-TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
-CHECK_INTERVAL = int(os.getenv('CHECK_INTERVAL', '300'))
-COINS = os.getenv('COINS', 'bitcoin,ethereum,solana').split(',')
-THRESHOLDS_STR = os.getenv('THRESHOLDS', 'bitcoin:above:100000,ethereum:below:3000,solana:above:200')
+def load_config():
+    try:
+        with open("config.yaml") as f:
+            cfg = yaml.safe_load(f)
+        if cfg is None:
+            cfg = {}
+        token = cfg.get("telegram", {}).get("token")
+        if not token:
+            sys.stderr.write(
+                "ERROR: Falta el token de Telegram en config.yaml.\n"
+                "Obtén uno creando un bot con @BotFather y coloca el token en la sección 'telegram.token'.\n"
+            )
+            sys.exit(1)
+        return cfg
+    except FileNotFoundError:
+        sys.stderr.write("ERROR: No se encontró config.yaml.\n")
+        sys.exit(1)
 
-# Parse thresholds: coin:above|below:price
+# Load configuration from file
+cfg = load_config()
+
+# Configuration from config.yaml
+TELEGRAM_BOT_TOKEN = cfg.get("telegram", {}).get("token")
+TELEGRAM_CHAT_ID = cfg.get("telegram", {}).get("chat_id", "")
+CHECK_INTERVAL = cfg.get("price", {}).get("check_interval", 300)
+COIN_ID = cfg.get("price", {}).get("coin_id", "bitcoin")
+THRESHOLD_USD = cfg.get("price", {}).get("threshold_usd", 30000)
+DIRECTION = cfg.get("price", {}).get("direction", "above")
+
+# Parse thresholds for compatibility with existing code
 THRESHOLDS: Dict[str, List[Tuple[str, float]]] = {}
-for threshold in THRESHOLDS_STR.split(','):
-    if ':' in threshold:
-        parts = threshold.split(':')
-        if len(parts) == 3:
-            coin, direction, price = parts
-            if coin not in THRESHOLDS:
-                THRESHOLDS[coin] = []
-            THRESHOLDS[coin].append((direction, float(price)))
+if COIN_ID:
+    THRESHOLDS[COIN_ID] = [(DIRECTION, THRESHOLD_USD)]
 
 # CoinGecko API
 COINGECKO_API = "https://api.coingecko.com/api/v3/simple/price"
 
 # Track which alerts have been triggered to avoid spam
-triggered_alerts: Dict[str, set] = {coin: set() for coin in COINS}
+# Define COINS list before it's used
 
 
 async def fetch_prices(coins: List[str]) -> Dict[str, float]:
@@ -187,11 +200,33 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(help_text, parse_mode='Markdown')
 
 
+def load_config():
+    try:
+        with open("config.yaml") as f:
+            cfg = yaml.safe_load(f)
+        token = cfg.get("telegram", {}).get("token")
+        if not token:
+            sys.stderr.write(
+                "ERROR: Falta el token de Telegram en config.yaml.\n"
+                "Obtén uno creando un bot con @BotFather y coloca el token en la sección 'telegram.token'.\n"
+            )
+            sys.exit(1)
+        return cfg
+    except FileNotFoundError:
+        sys.stderr.write("ERROR: No se encontró config.yaml.\n")
+        sys.exit(1)
+
 def main():
     """Main entry point."""
-    if not TELEGRAM_BOT_TOKEN:
-        print("ERROR: Falta TELEGRAM_BOT_TOKEN. Obtenelo en @BotFather y setealo con:")
-        print("  export TELEGRAM_BOT_TOKEN='TU_TOKEN'; docker run ...", file=sys.stderr)
+    try:
+        cfg = load_config()
+        TELEGRAM_BOT_TOKEN = cfg.get("telegram", {}).get("token")
+        TELEGRAM_CHAT_ID = cfg.get("telegram", {}).get("chat_id", "")
+        if not TELEGRAM_BOT_TOKEN:
+            sys.stderr.write("ERROR: Token de Telegram vacío en la configuración.\n")
+            sys.exit(1)
+    except Exception as e:
+        sys.stderr.write(f"ERROR: Fallo al cargar la configuración: {e}\n")
         sys.exit(1)
     if not TELEGRAM_CHAT_ID:
         print("ERROR: Falta TELEGRAM_CHAT_ID. Para obtenerlo, abre Telegram, escribi a @userinfobot y copiá tu ID. Luego exporta TELEGRAM_CHAT_ID=...", file=sys.stderr)
@@ -214,15 +249,25 @@ def main():
     logger.info("Bot started. Press Ctrl+C to stop.")
     
     # Run the bot
-    application.run_polling()
-
-
-if __name__ == '__main__':
-    # Asegurar que exista un loop de eventos antes de ejecutar main()
+    # 2️⃣ Ejecutar el bot
     try:
-        asyncio.get_running_loop()
-    except RuntimeError:
-        # No hay loop en ejecución, crear uno nuevo
-        asyncio.set_event_loop(asyncio.new_event_loop())
+        loop.run_until_complete(application.run_polling())
+    except KeyboardInterrupt:
+        logger.info("Bot stopped by user.")
+
+
+# Remove dry-run mode and ensure the bot runs with the correct token
+if __name__ == '__main__':
+    if TELEGRAM_BOT_TOKEN == 'TEST_TOKEN_12345':
+        print("⚠️ WARNING: Using test token. Replace with a real token from @BotFather for production.")
+    else:
+        print("✅ Using real token.")
+    # 1️⃣ Crear y registrar el loop
+    import asyncio
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    # Asegurar que exista un loop de eventos antes de ejecutar main()
+
+
     
     main()

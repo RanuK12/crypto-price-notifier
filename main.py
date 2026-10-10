@@ -251,7 +251,7 @@ def main():
     # Run the bot
     # 2️⃣ Ejecutar el bot
     try:
-        loop.run_until_complete(application.run_polling())
+        asyncio.run(application.run_polling())
     except KeyboardInterrupt:
         logger.info("Bot stopped by user.")
 
@@ -259,15 +259,11 @@ def main():
 # Remove dry-run mode and ensure the bot runs with the correct token
 if __name__ == '__main__':
     if TELEGRAM_BOT_TOKEN == 'TEST_TOKEN_12345':
-        print("⚠️ WARNING: Using test token. Replace with a real token from @BotFather for production.")
+        print("⚠️ WARNING: Using test token. To get a real token: open Telegram, search @BotFather, send /newbot, follow the steps to create a bot, copy the token and replace it in config.yaml or .env.")
     else:
         print("✅ Using real token.")
-    # 1️⃣ Crear y registrar el loop
     import asyncio
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    # Asegurar que exista un loop de eventos antes de ejecutar main()
-
-
-    
-    main()
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        logger.info("Bot stopped by user.")

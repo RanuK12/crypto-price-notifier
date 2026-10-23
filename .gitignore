@@ -15,3 +15,8 @@ __pycache__/
 dist/
 build/
 .aider*
+.env*
+!.env.example
+*.bak
+*.backup
+*.bak.*

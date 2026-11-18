@@ -62,7 +62,9 @@ if COIN_ID:
 COINGECKO_API = "https://api.coingecko.com/api/v3/simple/price"
 
 # Track which alerts have been triggered to avoid spam
-# Define COINS list before it's used
+COINS = [cfg.get('price', {}).get('coin_id', 'bitcoin')]
+triggered_alerts = {coin: set() for coin in COINS}
+THRESHOLDS_STR = f"{COINS[0]}:{cfg.get('price', {}).get('direction', 'above')}:{cfg.get('price', {}).get('threshold_usd', 30000)}"
 
 
 async def fetch_prices(coins: List[str]) -> Dict[str, float]:

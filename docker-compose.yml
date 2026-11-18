@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  crypto-notifier:
+    build: .
+    container_name: crypto-price-notifier
+    restart: unless-stopped
+    # Copia config.example.yaml a config.yaml, edita tu token y chat_id, y levanta:
+    #   docker compose up -d
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
